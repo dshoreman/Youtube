@@ -299,14 +299,12 @@ class Youtube
             $params['pageToken'] = $pageToken;
         }
         $apiData = $this->api_get($API_URL, $params);
-        $result = ['results' => $this->decodeList($apiData)];
+        $result = [
+            'results' => $this->decodeList($apiData),
+            'info' => (object) $this->page_info,
+        ];
 
-        if (is_string($pageToken) || $pageToken) {
-            $result['info']['nextPageToken'] = (isset($this->page_info['nextPageToken']) ? $this->page_info['nextPageToken'] : false);
-            $result['info']['prevPageToken'] = (isset($this->page_info['prevPageToken']) ? $this->page_info['prevPageToken'] : false);
-        }
-
-        return $result;
+        return (object) $result;
     }
 
     /**
